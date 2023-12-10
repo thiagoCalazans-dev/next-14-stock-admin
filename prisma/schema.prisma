@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Product   Product[]
+
+  @@map("categories")
+}
+
+model Brand {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Product   Product[]
+
+  @@map("brands")
+}
+
+model Color {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  hexadecimal String    @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Product     Product[]
+
+  @@map("colors")
+}
+
+model Size {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  value     String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Product   Product[]
+
+  @@map("size")
+}
+
+model Product {
+  id          String       @id @default(uuid())
+  name        String
+  code        String       @unique
+  price       Decimal
+  brand       Brand        @relation(fields: [brand_id], references: [id])
+  size        Size         @relation(fields: [size_id], references: [id])
+  color       Color        @relation(fields: [color_id], references: [id])
+  category    Category     @relation(fields: [category_id], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  brand_id    String
+  size_id     String
+  color_id    String
+  category_id String
+  Stock       Stock[]
+  StockEntry  StockEntry[]
+  StockOut    StockOut[]
+
+  @@map("product")
+}
+
+model Stock {
+  id           String       @id @default(uuid())
+  product      Product      @relation(fields: [product_code], references: [code])
+  product_code String       @unique
+  quantity     Int
+  StockEntry   StockEntry[]
+  StockOut     StockOut[]
+
+  @@map("stock")
+}
+
+model StockEntry {
+  id           String   @id @default(uuid())
+  quantity     Int
+  date         DateTime
+  unit_cost    Decimal
+  product      Product  @relation(fields: [product_code], references: [code])
+  Stock        Stock?   @relation(fields: [stockId], references: [id])
+  stockId      String?
+  product_code String
+
+  @@map("stock_entry")
+}
+
+model StockOut {
+  id           String   @id @default(uuid())
+  quantity     Int
+  date         DateTime
+  unit_price   Decimal
+  discount     Int
+  product      Product  @relation(fields: [product_code], references: [code])
+  Stock        Stock?   @relation(fields: [stockId], references: [id])
+  stockId      String?
+  product_code String
+
+  @@map("stock_out")
+}
