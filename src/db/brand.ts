@@ -1,4 +1,4 @@
-import { Brand } from "@/domain/brand";
+import { Brand } from "@/domain/entities/brand";
 import { db } from "./config";
 import { adapterBrand } from "@/adapter/brand-adapter";
 

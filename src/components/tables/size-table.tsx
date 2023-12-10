@@ -6,12 +6,14 @@ import {
   TableBody,
   TableCell,
 } from "../ui/table";
-import { dbSize } from "@/db/size";
 import { RemoveCategoryButton } from "../buttons/remove-size-button";
+import { Size } from "@/domain/entities/size";
 
-export async function SizeTable() {
-  const categories = await dbSize.getAll();
+interface SizeTableProps {
+  data: Size[];
+}
 
+export async function SizeTable({ data }: SizeTableProps) {
   return (
     <div className="rounded-md border border-border">
       <Table>
@@ -25,7 +27,7 @@ export async function SizeTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {categories.map((size) => {
+          {data.map((size) => {
             return (
               <TableRow key={size.id}>
                 <TableCell>{size.name}</TableCell>

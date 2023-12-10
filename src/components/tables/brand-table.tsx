@@ -6,12 +6,15 @@ import {
   TableBody,
   TableCell,
 } from "../ui/table";
-import { dbBrand } from "@/db/brand";
+
 import { RemoveBrandButton } from "../buttons/remove-brand-button";
+import { Brand } from "@/domain/entities/brand";
 
-export async function BrandTable() {
-  const brands = await dbBrand.getAll();
+interface BrandTableProps {
+  data: Brand[];
+}
 
+export async function BrandTable({ data }: BrandTableProps) {
   return (
     <div className="rounded-md border border-border">
       <Table>
@@ -24,7 +27,7 @@ export async function BrandTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {brands.map((brand) => {
+          {data.map((brand) => {
             return (
               <TableRow key={brand.id}>
                 <TableCell>{brand.name}</TableCell>

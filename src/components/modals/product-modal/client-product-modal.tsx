@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "../../ui/dialog";
 import { ProductForm } from "../../forms/product-form";
-import { Brand } from "@/domain/brand";
+import { Brand } from "@/domain/entities/brand";
 import { Color } from "@/domain/color";
 import { Size } from "@/domain/size";
 import { Category } from "@/domain/category";

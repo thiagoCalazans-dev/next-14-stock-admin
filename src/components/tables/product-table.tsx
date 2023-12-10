@@ -6,12 +6,14 @@ import {
   TableBody,
   TableCell,
 } from "../ui/table";
-import { dbProduct } from "@/db/product";
 import { RemoveProductButton } from "../buttons/remove-product-button";
+import { Product } from "@/domain/entities/product";
 
-export async function ProductTable() {
-  const products = await dbProduct.getAll();
+interface ProductTableProps {
+  data: Product[];
+}
 
+export async function ProductTable({ data }: ProductTableProps) {
   return (
     <div className="rounded-md border border-border">
       <Table>
@@ -30,7 +32,7 @@ export async function ProductTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {products.map((product) => {
+          {data.map((product) => {
             return (
               <TableRow key={product.id}>
                 <TableCell>{product.name}</TableCell>

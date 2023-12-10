@@ -1,4 +1,4 @@
-import { Color } from "@/domain/color";
+import { Color } from "@/domain/entities/color";
 import { Color as prismaColor } from "@prisma/client";
 
 export const adapterColor = {

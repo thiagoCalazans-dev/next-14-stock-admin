@@ -1,18 +1,18 @@
-import { Stock } from "@/domain/stock";
-import { StockDatabaseType } from "@/db/stock";
+import { Stock, StockEntry, StockOut } from "@/domain/entities/stock";
+import { StockDatabaseType, StockProductDatabaseType } from "@/db/stock";
 import { FormStockEntry } from "@/components/forms/stock-entry-form";
-import { StockEntry } from "@/domain/stock-entry";
 import { StockEntryDTO } from "@/actions/stock-entry";
 import { FormStockOut } from "@/components/forms/stock-out-form";
 import { StockOutDTO } from "@/actions/stock-out";
 
 export const adapterStock = {
-  dbToDomain,
+  dbStockToDomain,
   formStockEntryToAction,
   formStockOutToAction,
+  dbStockProductToDomain,
 };
 
-function dbToDomain(dbStock: StockDatabaseType): Stock {
+function dbStockToDomain(dbStock: StockDatabaseType): Stock {
   const stock: Stock = {
     id: dbStock.id,
     product: {
@@ -51,4 +51,48 @@ function formStockOutToAction(formValues: FormStockOut) {
   };
 
   return stockEntry;
+}
+
+function dbStockProductToDomain(dbStock: StockProductDatabaseType) {
+  console.log(dbStock);
+  const stockEntries = dbStock.StockEntry.map((entry) => {
+    const StockEntry: StockEntry = {
+      id: entry.id,
+      date: entry.date,
+      quantity: entry.quantity,
+      unitCost: Number(entry.unit_cost),
+    };
+
+    return StockEntry;
+  });
+
+  const stockOuts = dbStock.StockOut.map((out) => {
+    const StockOut: StockOut = {
+      id: out.id,
+      date: out.date,
+      quantity: out.quantity,
+      unitPrice: Number(out.unit_price),
+      discount: Number(out.discount),
+    };
+
+    return StockOut;
+  });
+
+  const stock: Stock = {
+    id: dbStock.id,
+    product: {
+      name: dbStock.name,
+      brand: dbStock.brand.name,
+      color: dbStock.color.name,
+      size: dbStock.size.name,
+      category: dbStock.category.name,
+      code: dbStock.code,
+      price: Number(dbStock.price),
+      id: dbStock.id,
+    },
+    quantity: dbStock.Stock[0].quantity,
+    stockEntries: stockEntries,
+    stockOuts: stockOuts,
+  };
+  return Stock.parse(stock);
 }

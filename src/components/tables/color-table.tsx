@@ -6,12 +6,14 @@ import {
   TableBody,
   TableCell,
 } from "../ui/table";
-import { dbColor } from "@/db/color";
 import { RemoveCategoryButton } from "../buttons/remove-color-button";
+import { Color } from "@/domain/entities/color";
 
-export async function ColorTable() {
-  const categories = await dbColor.getAll();
+interface ColorTableProps {
+  data: Color[];
+}
 
+export async function ColorTable({ data }: ColorTableProps) {
   return (
     <div className="rounded-md border border-border">
       <Table>
@@ -25,7 +27,7 @@ export async function ColorTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {categories.map((color) => {
+          {data.map((color) => {
             return (
               <TableRow key={color.id}>
                 <TableCell>{color.name}</TableCell>

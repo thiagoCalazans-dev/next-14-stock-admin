@@ -3,9 +3,11 @@ import { ColorTable } from "@/components/tables/color-table";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
+import { dbColor } from "@/db/color";
 import { Suspense } from "react";
 
 export default async function Page() {
+  const colors = await dbColor.getAll();
   return (
     <div className="flex-1 space-y-4 pt-6">
       <div className="flex items-center justify-between">
@@ -20,7 +22,7 @@ export default async function Page() {
           </div>
         }
       >
-        <ColorTable />
+        <ColorTable data={colors} />
       </Suspense>
     </div>
   );

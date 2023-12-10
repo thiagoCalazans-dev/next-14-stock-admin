@@ -13,7 +13,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useToast } from "@/hooks/useToast";
 import { createProductAction } from "@/actions/create-product-action";
-import { Brand } from "@/domain/brand";
+import { Brand } from "@/domain/entities/brand";
 import { Color } from "@/domain/color";
 import { Size } from "@/domain/size";
 import { Category } from "@/domain/category";

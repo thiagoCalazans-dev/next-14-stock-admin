@@ -2,10 +2,11 @@ import { CategoryModal } from "@/components/modals/category-modal";
 import { CategoryTable } from "@/components/tables/category-table";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Suspense } from "react";
+import { dbCategory } from "@/db/category";
 
 export default async function Page() {
+  const categories = await dbCategory.getAll();
+
   return (
     <div className="flex-1 space-y-4 pt-6">
       <div className="flex items-center justify-between">
@@ -13,15 +14,7 @@ export default async function Page() {
         <CategoryModal />
       </div>
       <Separator />
-      <Suspense
-        fallback={
-          <div className="h-96 p-11 bg-red-500">
-            <Skeleton />
-          </div>
-        }
-      >
-        <CategoryTable />
-      </Suspense>
+      <CategoryTable data={categories} />
     </div>
   );
 }

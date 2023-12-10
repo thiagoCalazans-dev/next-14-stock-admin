@@ -1,9 +1,6 @@
-import { Stock } from "@/domain/stock";
+import { Stock } from "@/domain/entities/stock";
 import { db, dbType } from "./config";
-import { SendToBackIcon } from "lucide-react";
-import { truncate } from "fs";
 import { adapterStock } from "@/adapter/stock-adapter";
-import internal from "stream";
 
 const dbStockValidator = dbType.validator<dbType.StockDefaultArgs>()({
   include: {
@@ -28,7 +25,9 @@ async function getAll(): Promise<Stock[]> {
       },
     },
   });
-  const stock = dbStocks.map((dbStock) => adapterStock.dbToDomain(dbStock));
+  const stock = dbStocks.map((dbStock) =>
+    adapterStock.dbStockToDomain(dbStock)
+  );
   return stock;
 }
 
@@ -39,13 +38,45 @@ interface StockEntry {
   productCode: string;
 }
 
+const dbStockProductValidator = dbType.validator<dbType.ProductDefaultArgs>()({
+  include: {
+    Stock: true,
+    StockEntry: true,
+    StockOut: true,
+    brand: true,
+    category: true,
+    color: true,
+    size: true,
+  },
+});
+
+export type StockProductDatabaseType = dbType.ProductGetPayload<
+  typeof dbStockProductValidator
+>;
+
 async function findStockProductByCodeWithEntriesAndOuts(code: string) {
-  await db.product.findUnique({
+  const dbStockedProduct = await db.product.findUnique({
     where: {
       code: code,
     },
-    include: {},
+    include: {
+      Stock: true,
+      StockEntry: true,
+      StockOut: true,
+      brand: true,
+      category: true,
+      color: true,
+      size: true,
+    },
   });
+
+  console.log(dbStockedProduct);
+
+  if (!dbStockedProduct)
+    throw new Error("esse produto nao existe no seu estoque");
+
+  const StockProduct = adapterStock.dbStockProductToDomain(dbStockedProduct);
+  return StockProduct;
 }
 
 async function stockEntry(data: StockEntry): Promise<void> {
@@ -116,4 +147,5 @@ export const dbStock = {
   getAll,
   stockEntry,
   stockOut,
+  findStockProductByCodeWithEntriesAndOuts,
 };

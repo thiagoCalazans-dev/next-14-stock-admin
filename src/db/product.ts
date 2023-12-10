@@ -1,6 +1,6 @@
 import { db, dbType } from "./config";
 import { adapterProduct } from "@/adapter/product-adapter";
-import { Product } from "@/domain/product";
+import { Product } from "@/domain/entities/product";
 
 const dbProductValidator = dbType.validator<dbType.ProductDefaultArgs>()({
   include: { brand: true, category: true, color: true, size: true },

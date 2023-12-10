@@ -6,12 +6,14 @@ import {
   TableBody,
   TableCell,
 } from "../ui/table";
-import { dbCategory } from "@/db/category";
 import { RemoveCategoryButton } from "../buttons/remove-category-button";
+import { Category } from "@/domain/entities/category";
 
-export async function CategoryTable() {
-  const categories = await dbCategory.getAll();
+interface CategoryTableProps {
+  data: Category[];
+}
 
+export async function CategoryTable({ data }: CategoryTableProps) {
   return (
     <div className="rounded-md border border-border">
       <Table>
@@ -24,7 +26,7 @@ export async function CategoryTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {categories.map((category) => {
+          {data.map((category) => {
             return (
               <TableRow key={category.id}>
                 <TableCell>{category.name}</TableCell>

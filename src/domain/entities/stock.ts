@@ -1,13 +1,16 @@
 import { schema } from "@/infra/schema";
 import { Product } from "./product";
+import { string } from "zod";
 
 const stockEntrySkeleton = {
+  id: string(),
   date: schema.date(),
   quantity: schema.number().positive(),
   unitCost: schema.number(),
 };
 
 const stockOutSkeleton = {
+  id: string(),
   date: schema.date(),
   quantity: schema.number().positive(),
   unitPrice: schema.number(),

@@ -1,4 +1,4 @@
-import { Category } from "@/domain/category";
+import { Category } from "@/domain/entities/category";
 import { Category as prismaCategory } from "@prisma/client";
 
 export const adapterCategory = {

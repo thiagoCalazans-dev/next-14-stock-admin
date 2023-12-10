@@ -1,4 +1,4 @@
-import { Size } from "@/domain/size";
+import { Size } from "@/domain/entities/size";
 import { Size as prismaSize } from "@prisma/client";
 
 export const adapterSize = {

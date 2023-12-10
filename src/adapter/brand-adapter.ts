@@ -1,4 +1,4 @@
-import { Brand } from "@/domain/brand";
+import { Brand } from "@/domain/entities/brand";
 import { Brand as prismaBrand } from "@prisma/client";
 
 export const adapterBrand = {
