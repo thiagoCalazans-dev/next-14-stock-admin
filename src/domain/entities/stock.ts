@@ -31,4 +31,5 @@ const stockSkeleton = {
 };
 
 export const Stock = schema.object(stockSkeleton);
+
 export type Stock = schema.infer<typeof Stock>;
